@@ -5,6 +5,7 @@ import ownerRouter from "./src/router/ownerRouter.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import userRouter from "./src/router/userRouter.js"
+import helperRouter from "./src/router/helperRouter.js"
 
 const app=express()
 dotenv.config()
@@ -21,6 +22,7 @@ app.use("/ping",(req,res)=>{
 })
 app.use("/app/owner",ownerRouter)
 app.use("/app/user",userRouter)
+app.use("/app/helper",helperRouter)
 
 app.use(errorMiddleware)
 export default app

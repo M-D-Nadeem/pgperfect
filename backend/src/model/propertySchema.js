@@ -32,6 +32,12 @@ const propertySchema = new mongoose.Schema({
                 rating: { type: Number, default: 3 }, // Example: 1 to 5 
 }],
 
+complaints: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'complaint',
+  },
+],
     feedbacks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'feedback' }],
     revenue:   { type: Number, default: 0 },
   },{timestamps:true});

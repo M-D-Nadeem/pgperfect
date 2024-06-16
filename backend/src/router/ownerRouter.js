@@ -6,7 +6,7 @@ import authorizedRoles from "../middleware/commonMiddleware.js"
 
 const ownerRouter=express.Router()
 ownerRouter.post("/signup",signUp)
-ownerRouter.post("/login",logIn)
+ownerRouter.post("/login",logIn) 
 ownerRouter.get("/logout",jwtAuth,logOut)
 ownerRouter.get("/getownerinfo",jwtAuth,authorizedRoles("owner"),getOwnerDetails)
 ownerRouter.post("/property/add",jwtAuth,authorizedRoles("owner"),upload.array("propertyPhoto",10),createProperty)

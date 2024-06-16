@@ -6,6 +6,7 @@ import guest from "../model/guestSchema.js"
 import cloudinary from "cloudinary"
 import fs from "fs/promises"
 import complaint from "../model/complainSchema.js"
+import propertySchema from "../model/propertySchema.js";
 
 const searchProperty=async (req,res,next)=>{
     const {city,state,category}=req.body 
@@ -219,15 +220,25 @@ const addComplain=async (req,res,next)=>{
       req.files.map((file)=> fs.rm(`uploads/${file.filename}`))
       console.log(complainPhotoResult);
     }
+    const validTypes = ['cleaning', 'food', 'maintenance', 'noise', 'other'];
+    if (!validTypes.includes(type.toLowerCase())) {
+      return next(new AppError("Invalid type",404))
+    }
+
     const complainInfo=await complaint.create({
       guest:guestId,
       property:guestInfo.propertyId,
-      type,
       title,
+      type,
       description,
       photos:complainPhotoResult
     })
 
+    await propertySchema.findByIdAndUpdate(
+      guestInfo.propertyId,
+      { $push: { complaints: complainInfo._id } },
+      { new: true }
+    );
     if(complainInfo){
       try{
         const transporter = nodemailer.createTransport({

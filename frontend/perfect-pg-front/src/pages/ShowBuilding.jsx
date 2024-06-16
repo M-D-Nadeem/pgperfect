@@ -45,7 +45,7 @@ function ShowBuilding() {
           </div>
           <div>
             <a
-             onClick={()=>navigate("/adduser")}
+             onClick={()=>navigate("/adduser" ,{state:{state}}) }
               
               className="absolute top-2 right-20 bg-blue-600 text-white py-2 px-4 rounded-md"
             >

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addGuest, createSubscription, sendLoginIdToGuest } from "../redux/slice/ownerSlice";
+import { useLocation } from "react-router-dom";
 
 function TenantForm() {
     const dispatch=useDispatch()
+    const {state}=useLocation()
+    const cards=state.state.cards
+    console.log(cards);
     const [userData,setUserData]=useState({
         name:"",
         phone:"",
         email:"",
         roomType:"",
         roomNo:"",
-        propertyId:"66646d88f41a39c454703313"
+        propertyId:cards._id
     })
     const [subscriptionData,setsubscriptionData]=useState({
        userId:"",
