@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
@@ -10,6 +10,12 @@ const About = () => {
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeInOut' } },
+  };
+
+  const [open, setOpen] = useState(null);
+
+  const handleToggle = (index) => {
+    setOpen(open === index ? null : index);
   };
 
   return (
@@ -106,7 +112,75 @@ const About = () => {
             Have questions or need support? Contact us at <a href="mailto:support@pgperfect.com" className='text-blue-600'>support@pgperfect.com</a> or call us at +1 234 567 890.
           </p>
         </motion.div>
+
+        {/* FAQ Section */}
+        <motion.div
+          className="faq-section my-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={cardVariants}
+        >
+          <h2 className='text-4xl font-bold mb-8 text-blue-600'>Frequently Asked Questions</h2>
+          <div className='space-y-4'>
+            {[
+              { question: 'What is PG Perfect?', answer: 'PG Perfect is a comprehensive platform designed to streamline the management of PG accommodations.' },
+              { question: 'How does PG Perfect help PG owners?', answer: 'Our platform offers features like income and expense tracking, complaint management, and detailed reporting to help PG owners manage their properties efficiently.' },
+              { question: 'Can tenants use PG Perfect?', answer: 'Yes, tenants can use PG Perfect to log complaints and communicate with the management easily.' },
+              { question: 'How can I get support?', answer: 'You can contact us at support@pgperfect.com or call us at +1 234 567 890 for any support related queries.' }
+            ].map((faq, index) => (
+              <div key={index}>
+                <button
+                  className="w-full text-left text-xl font-semibold py-2 px-4 bg-blue-600 text-white rounded-md"
+                  onClick={() => handleToggle(index)}
+                >
+                  {faq.question}
+                </button>
+                {open === index && (
+                  <div className="mt-2 text-lg text-black bg-gray-100 p-4 rounded-md">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
+
+      {/* Footer as Cards */}
+      <div className="footer-cards container mx-auto px-10 py-16 bg-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="footer-card p-6 bg-white shadow-md rounded-md">
+            <h3 className="text-2xl font-bold mb-4 text-blue-600">About Us</h3>
+            <p className="text-lg text-black">PG Perfect is dedicated to revolutionizing the way PGs are managed, providing a comprehensive platform to streamline operations.</p>
+          </div>
+          <div className="footer-card p-6 bg-white shadow-md rounded-md">
+            <h3 className="text-2xl font-bold mb-4 text-blue-600">Contact Information</h3>
+            <p className="text-lg text-black">Email: <a href="mailto:support@pgperfect.com" className="text-blue-600">support@pgperfect.com</a></p>
+            <p className="text-lg text-black">Phone: +1 234 567 890</p>
+          </div>
+          <div className="footer-card p-6 bg-white shadow-md rounded-md">
+            <h3 className="text-2xl font-bold mb-4 text-blue-600">Legal</h3>
+            <ul className="list-disc list-inside space-y-2 text-black">
+              <li><a href="#" className="text-blue-600">Privacy Policy</a></li>
+              <li><a href="#" className="text-blue-600">Terms of Service</a></li>
+              <li><a href="#" className="text-blue-600">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <footer className="bg-gray-800 text-white py-6">
+        <div className="container mx-auto px-10 flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <p>&copy; {new Date().getFullYear()} PG Perfect. All rights reserved.</p>
+          </div>
+          <div className="flex space-x-4">
+            <a href="#" className="hover:text-blue-600">Privacy Policy</a>
+            <a href="#" className="hover:text-blue-600">Terms of Service</a>
+            <a href="#" className="hover:text-blue-600">Contact Us</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
