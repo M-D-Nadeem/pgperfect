@@ -54,7 +54,7 @@ export const getRazorpayId=createAsyncThunk("/razorpay/getId",async ()=>{
 
 export const buySubscription=createAsyncThunk("/razorpay/buy",async (data)=>{
     try{
-        const response=axiosInstance.post("/payment/subscribe",data)
+        const response=axiosInstance.post("/owner/payment/subscribe",data)
         return (await response).data
     }
     catch(err){

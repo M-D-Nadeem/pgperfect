@@ -66,8 +66,23 @@ export const addComplain=createAsyncThunk("/addcomplain",async (data)=>{
         const response=axiosInstance.post("/user/addcomplain",data)
         toast.promise(response,{
             loading:"Adding Complain",
-            sucess:"Complain added sucessfully",
+            success:"Complain added sucessfully",
             error:"Failed to add complain"
+        })
+        return (await response).data
+    }
+    catch(err){
+        toast.error(err)
+    }
+})
+
+export const addFeedback=createAsyncThunk("/addfeedback",async(feedback)=>{
+    try{
+        const response=axiosInstance.post("/user/addfeedback",feedback)
+        toast.promise(response,{
+            loading:"Accespting your feedback",
+            success:"Thanks for your feedback...",
+            error:"Opps! Failed to add feedback"
         })
         return (await response).data
     }

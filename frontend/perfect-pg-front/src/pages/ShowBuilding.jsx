@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { complainResolveByOwner, getAllComplain } from "../redux/slice/propertySlice";
+import FeedbackComponent from "./FeedbackComponent";
 
 
 function ShowBuilding() {
@@ -87,6 +88,9 @@ function ShowBuilding() {
             <span className="tracking-tight font-semibold">State:</span> {state.cards.state}
             <span className="tracking-tight font-semibold">City:</span> {state.cards.city}
             </h4>
+            <div>
+              <FeedbackComponent propertyId={state.cards._id} />
+            </div>
           </div>
         </div>
         <div className="tenants_data p-6">

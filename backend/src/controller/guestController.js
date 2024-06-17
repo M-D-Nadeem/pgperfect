@@ -7,6 +7,7 @@ import cloudinary from "cloudinary"
 import fs from "fs/promises"
 import complaint from "../model/complainSchema.js"
 import propertySchema from "../model/propertySchema.js";
+import feedback from "../model/feedbackSchema.js";
 
 const searchProperty=async (req,res,next)=>{
     const {city,state,category}=req.body 
@@ -333,6 +334,51 @@ const contactAdmin=async (req,res,next)=>{
 // }
 // }
 
+   const addFeedback=async (req,res,next)=>{
+    try {
+      const guestId=req.user.id
+      const feedbackData  = req.body.feedback;
+      console.log(feedbackData);
+      if (!guestId || !feedbackData) {
+        return next(new AppError('Guest ID and feedback are required.',404))
+            }
+
+        const guestInfo=await guest.findById(guestId)
+        let feedbackDoc = await feedback.findOne({ property: guestInfo.propertyId });
+        const propertyInfo = await property.findById(guestInfo.propertyId );
+      if (!feedbackDoc) {
+        feedbackDoc = await feedback.create({ property: guestInfo.propertyId  });
+        propertyInfo.feedbacks.push(feedbackDoc._id);
+        await propertyInfo.save();
+      }
+
+      const categories = [
+        'cleanliness', 'waterSupply', 'electrical', 'safety', 'internet', 'maintenance', 'security', 'bookingProcess'
+      ];
+
+      for (const category of categories) {
+        if (feedbackData[category] !== undefined) {
+          const value = feedbackData[category];
+          feedbackDoc[category].feedbackSum += value;
+          feedbackDoc[category].noOfUser += 1;
+          feedbackDoc[category].avg = feedbackDoc[category].feedbackSum / feedbackDoc[category].noOfUser;
+        }
+      }
+      await feedbackDoc.save();
+
+      return res.status(200).json(
+        { 
+          sucess:true,
+          message: 'Feedback added successfully.', 
+          data: feedbackDoc 
+        });
+    } catch (err) {
+      console.error('Error adding feedback:', err);
+      return next(new AppError(err.message,404))
+    }
+  };   
+
+
 
 export  {searchProperty,showAllProperty,sendEmailToOwner,loginDashboard,updateLogin,
-  logOut,addComplain,contactAdmin}
+  logOut,addComplain,contactAdmin,addFeedback}

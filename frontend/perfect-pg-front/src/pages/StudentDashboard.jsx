@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import pay1 from "../pages/HomePage/images/pay1.png"
 import { buySubscription, getRazorpayId, varifySubscribtion } from "../redux/slice/paymentSlice"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { Photo } from "@mui/icons-material"
 import { addComplain } from "../redux/slice/userSlice"
+
 const StudentDashboard=()=>{
     const userData=useSelector((store)=>store.user.data)
     const dispatch=useDispatch()
@@ -16,15 +16,17 @@ const StudentDashboard=()=>{
         signature:"",
         subscription_id:""
     }
-    const key=useSelector((store)=>store.payment.key)
-    const subscription_id=userData.subscription.id
 
+    const [key,setKey]=useState("")
+    const subscription_id=userData.subscription.id
     async function load(){
-        await dispatch(getRazorpayId())
+       const response= await dispatch(getRazorpayId())   
+       setKey(response.payload.data)
     }
     useEffect(()=>{
         load()
     },[])
+    console.log(key);
     async function handelSubscribe(e){
         e.preventDefault()
         console.log(subscription_id);
@@ -135,10 +137,11 @@ const StudentDashboard=()=>{
           <nav className="h-[85px] border-b-2"></nav>
 
           <header className="bg-slate-200 shadow">
-            <div className="w-full py-4 px-10">
+            <div className="w-full py-4 px-10 flex justify-between">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                 Welcome, User
               </h1>
+              <Link to={"/addfeedback"}><button className="text-center rounded-lg text-sm font-semibold px-4 py-2 bg-blue-600 text-white">Add Feedback</button></Link>
             </div>
           </header>
         </div>
@@ -150,21 +153,27 @@ const StudentDashboard=()=>{
 
             <div className="flex flex-col justify-center w-[80%]">
                 <form onSubmit={onSubmit} >
-              <div className="mb-5 flex flex-col ">
-                <label for="name" className=" block font-medium">
-                  Type of complain
-                </label>
-                <input
-                  type="text"
-                  name="type"
-                  onChange={handelComplainData}
-                  required={true} 
-                  value={complainData.type}
-                  id="name"
-                  placeholder="Type"
-                  className="w-[100%] rounded-md border border-[#e0e0e0] bg-white py-2 px-4 text-black outline-none focus:border-blue-600 focus:shadow-md"
-                />
-              </div>
+               <div className="mb-5 flex flex-col">
+      <label htmlFor="type" className="block font-medium">
+        Type of Complain
+      </label>
+      <div className="flex flex-col space-y-2">
+        {['cleaning', 'food', 'maintenance', 'noise', 'other'].map((type) => (
+          <label key={type} className="inline-flex items-center">
+            <input
+              type="radio"
+              name="type"
+              value={type}
+              onChange={handelComplainData}
+              required={true}
+              checked={complainData.type === type}
+              className="form-radio text-blue-600"
+            />
+            <span className="ml-2">{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+          </label>
+        ))}
+      </div>
+    </div>
               <div className="mb-5 flex flex-col ">
                 <label for="name" className=" block font-medium">
                   Title:

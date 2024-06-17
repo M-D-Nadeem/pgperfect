@@ -9,6 +9,7 @@ import nodemailer from "nodemailer"
 import complaint from "../model/complainSchema.js"
 import razorpay  from "razorpay"
 import { instance } from "../../server.js"
+import feedback from "../model/feedbackSchema.js";
 
 const signUp=async (req,res,next)=>{
     const {name,email,password,phone}=req.body
@@ -670,7 +671,7 @@ const getAllProperty=async (req,res,next)=>{
         userInfo.subscription.amount=amount
         await userInfo.save()
         
-        return res.status(200).json({
+        return res.status(200).json({ 
             sucess:true,
             message:"User subscribed sucessfully",
             data:subscription
@@ -720,7 +721,7 @@ const getAllProperty=async (req,res,next)=>{
             return res.status(200).json({
                 sucess:true,
                 message:"Payment Api Key",
-                key:process.env.RAZORPAY_KEY_ID
+                data:process.env.RAZORPAY_KEY_ID
             })
         }
         catch(err){
@@ -797,7 +798,36 @@ const getAllProperty=async (req,res,next)=>{
             return next(new AppError(err.message,500))
         }
     }
+
+    const getAllFeedback=async (req,res,next)=>{
+        const { propertyId } = req.params;
+    
+        try {
+          const feedbackInfo = await feedback.findOne({ property: propertyId });
+      
+          if (!feedback) {
+            return next(new AppError('Feedback not found for this property',404))
+          }
+      
+          const averages = {
+            cleanliness: feedbackInfo.cleanliness.avg,
+            waterSupply: feedbackInfo.waterSupply.avg,
+            electrical: feedbackInfo.electrical.avg,
+            safety: feedbackInfo.safety.avg,
+            internet: feedbackInfo.internet.avg,
+            maintenance: feedbackInfo.maintenance.avg,
+            security: feedbackInfo.security.avg,
+            bookingProcess: feedbackInfo.bookingProcess.avg,
+          };
+      
+          res.status(200).json({
+            sucess:true,
+            data: averages });
+        } catch (err) {
+          return next(new AppError(err.message,404))
+        }
+      }
 export {signUp,logIn,logOut,getOwnerDetails,createProperty,updateProperty,deleteProperty,
     getPropertyById,getAllProperty,addGuest,sendLoginIdToGuest,getAllComplains,
      getComplainById,resolveComplainByOwner,createSubscription,
-     varifySubscribtion,getAllSubscription,getPaymentApiKey1}
+     varifySubscribtion,getAllSubscription,getPaymentApiKey1,getAllFeedback}

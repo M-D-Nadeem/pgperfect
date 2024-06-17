@@ -1,5 +1,5 @@
 import express from "express"
-import { addGuest, createProperty, createSubscription, deleteProperty, getAllComplains, getAllProperty, getComplainById, getOwnerDetails, getPropertyById, logIn, logOut, resolveComplainByOwner, sendLoginIdToGuest, signUp, updateProperty, varifySubscribtion, getAllSubscription, getPaymentApiKey1 } from "../controller/ownerController.js"
+import { addGuest, createProperty, createSubscription, deleteProperty, getAllComplains, getAllProperty, getComplainById, getOwnerDetails, getPropertyById, logIn, logOut, resolveComplainByOwner, sendLoginIdToGuest, signUp, updateProperty, varifySubscribtion, getAllSubscription, getPaymentApiKey1, getAllFeedback } from "../controller/ownerController.js"
 import jwtAuth from "../middleware/ownerMiddleware.js"
 import upload from "../middleware/multerMiddleware.js"
 import authorizedRoles from "../middleware/commonMiddleware.js"
@@ -27,12 +27,13 @@ ownerRouter.post("/sendlogin/:guestId",jwtAuth,sendLoginIdToGuest)
 ownerRouter.get("/allcomplains/:propertyId",getAllComplains)
 ownerRouter.get("/complain/:complainId",getComplainById)
 ownerRouter.post("/payment/subscribe",createSubscription)
-ownerRouter.route("/paymentKey")
-.get(jwtAuth,getPaymentApiKey1)
+ownerRouter.get("/paymentKey",getPaymentApiKey1)
+
 ownerRouter.route("/verify")
-.post(jwtAuth,varifySubscribtion)
+.post(varifySubscribtion)
 ownerRouter.route("/getAllSubscription")
 .get(jwtAuth,getAllSubscription)
 ownerRouter.post("/resolvecomplain/:complainId",jwtAuth,resolveComplainByOwner)
 
+ownerRouter.get("/getallfeedback/:propertyId",jwtAuth,getAllFeedback)
 export default ownerRouter

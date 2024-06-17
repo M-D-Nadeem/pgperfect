@@ -19,6 +19,7 @@ import AdminDashboard from './pages/AdminDashboard.jsx'
 import HomePage from './pages/HomePage.jsx'
 import About from './pages/AboutUsPage.jsx'
 import StudentDashboard from './pages/StudentDashboard.jsx'
+import AddFeedback from './pages/AddFeedback.jsx'
 
 const appRouter=createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const appRouter=createBrowserRouter([
      {
       path:"/studentdashboard",
       element:<StudentDashboard />
+     },
+     {
+      path:"/addfeedback",
+      element:<AddFeedback />
      }
     ]
      }

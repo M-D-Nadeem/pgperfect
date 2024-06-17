@@ -1,10 +1,47 @@
 import mongoose from "mongoose";
 const feedbackSchema = new mongoose.Schema({
     property: { type: mongoose.Schema.Types.ObjectId, ref: 'property', required: true },
-    guest: { type: Schema.Types.ObjectId, ref: 'guest', required: true },
-    feedback: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
+    cleanliness:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    waterSupply:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    electrical:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    safety:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    internet:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    maintenance:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    security:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    bookingProcess:{
+      noOfUser:{type:Number, default:0},
+      feedbackSum:{type:Number, default:0},
+      avg:{type:Number, default:0}
+    },
+    
   });
   
-  const Feedback = mongoose.model('feedback', feedbackSchema);
-  module.exports = Feedback;
+  export default mongoose.model('feedback', feedbackSchema);

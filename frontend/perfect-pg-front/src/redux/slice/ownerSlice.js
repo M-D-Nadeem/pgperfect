@@ -30,6 +30,16 @@ export const createSubscription=createAsyncThunk("/payment/subscribe",async(data
       toast.error(err?.response?.data?.message)
   }
 })
+
+export const getAllFeedback=createAsyncThunk("/getallfeedback",async(propertyId)=>{
+     try{
+      const response=axiosInstance.get(`/owner/getallfeedback/${propertyId}`)
+      return (await response).data
+     }
+     catch(err){
+      toast.error(err?.response?.data?.message)
+  }
+})
 export const sendLoginIdToGuest=createAsyncThunk("/sendlogin",async (userId)=>{
    try{
       const response=axiosInstance.post(`/owner/sendlogin/${userId}`)
