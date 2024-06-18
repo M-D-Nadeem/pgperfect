@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Nav from './Nav';
+import Navbar from './HomePage/Navbar';
 
 
 const About = () => {
@@ -14,7 +16,9 @@ const About = () => {
   };
 
   return (
+    
     <div className='about-page w-full'>
+      <Navbar />
       <motion.div
         className="about-hero relative h-96 overflow-hidden"
         initial={{ opacity: 0 }}
@@ -34,12 +38,13 @@ const About = () => {
             },
           }}
         >
+          <img src="/bg.jpg" alt="Background" className="absolute inset-0 w-full h-full object-cover z-0 opacity-65" />
           <motion.h1
             className="text-6xl font-bold"
             variants={textVariants}
             custom={1}
           >
-            About <span className='text-blue-600'>PG Perfect</span>
+            <span className='text-white opacity-100'>About</span> <span className='text-blue-600 opacity-30'>PG Perfect</span>
           </motion.h1>
           <motion.p
             className='text-xl italic font-semibold mt-4'

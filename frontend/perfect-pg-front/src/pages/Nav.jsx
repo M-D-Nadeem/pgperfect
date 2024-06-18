@@ -10,21 +10,24 @@ const user = {
   };
 const Nav=()=>{
     const [isOpen, setIsOpen] = useState(false);
-    const {role1}=useSelector((store)=>store.auth)
-    const {role2}=useSelector((store)=>store.user)
+    const role1=useSelector((store)=>store.auth.role)
+    const role2=useSelector((store)=>store.user.role)
     const navigate=useNavigate()
+    console.log(role1);
+    console.log(role2);
     const dispatch=useDispatch()
-    const handleLogout = () => {
+    const handleLogout =async () => {
       // Add your logout logic here
-      if(role1=="owner"){
-        const response= dispatch(logoutAccount())
+      if(role1!=undefined && role1=="owner"){
+        const response=await dispatch(logoutAccount())
         console.log(response?.payload);
         if(response?.payload?.sucess){
             navigate("/homepage")
         }
        }
-       else if(role2=="user"){
-        const response= dispatch(logoutAccountUser())
+       else if(role2!=undefined && role2=="user"){
+        const response=await dispatch(logoutAccountUser())
+        console.log(response);
         if(response?.payload?.sucess){
             navigate("/homepage")
         }
@@ -32,13 +35,21 @@ const Nav=()=>{
       setIsOpen(false);
     };
  
+    async function handelDashboardButton(){
+      if(role1=="owner"){
+        navigate("/admindashboard")
+      }
+      else if(role2=="user"){
+        navigate("/studentdashboard")
+      }
+    }
     return(
         <nav className="py-4 px-10 flex items-center gap-28">
             <div className="flex gap-16 text-xl font-bold tracking-tighter">
               <a className="text-blue-600 w-32" href="/">PG PERFECT</a>
-              <h4 className="text-center rounded-lg text-sm font-semibold px-4 py-2 bg-blue-600 text-white">
+              <button onClick={()=>handelDashboardButton()} className="text-center rounded-lg text-sm font-semibold px-4 py-2 bg-blue-600 text-white">
                 Dashboard
-              </h4>
+              </button>
             </div>
             <div className="flex justify-between items-center w-full">
               <div className="ml-auto relative">
@@ -54,13 +65,7 @@ const Nav=()=>{
                 </button>
                 {isOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Profile
-                    </a>
+                    
                     <a
                       href="#"
                       className="block px-4 py-2 text-gray-800 hover:bg-gray-200"

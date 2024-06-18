@@ -141,6 +141,8 @@ const loginDashboard=async (req,res,next)=>{
       httpOnly:true,
       secure:true
   }
+  findGuest.role="user"
+  await findGuest.save()
   const userToken=await findGuest.jwtToken()
 
   res.cookie("userToken",userToken,cookieOption)
@@ -162,6 +164,16 @@ const updateLogin=async (req,res,next)=>{
   const userId=req.user.id
   try{
     const updateInfo=await guest.findByIdAndUpdate(userId,{loginId:loginId,loginPassword:loginPassword})
+
+    
+    const cookieOption={
+      maxAge:7*24*60*60*1000, //7days in expiry data
+      httpOnly:true,
+      secure:true
+  }
+  const userToken=await updateInfo.jwtToken()
+
+  res.cookie("userToken",userToken,cookieOption)
     return res.status(200).json({
       sucess:true,
       message:"Update sucessfully",

@@ -61,7 +61,10 @@ const logIn=async (req,res,next)=>{
         if(!ownerFind || ownerFind.password!=password){
             return next(new AppError("Invalid credentials",404))
         }
+        ownerFind.role="owner"
+        await ownerFind.save()
         ownerFind.password=undefined
+        
         const cookieOption={
             maxAge:7*24*60*60*1000, //7days in expiry data
             httpOnly:true,
@@ -505,10 +508,11 @@ const getAllProperty=async (req,res,next)=>{
         try{
             const complaints = await complaint.find({ property: propertyId }).populate('guest').populate("property")
             
+            const complaintData=complaints.filter((ele)=>ele.status=="Pending")
             return res.status(200).json({
                 sucess:true,
                 message:"Fetched all complaint sucessfully",
-                data:complaints
+                data:complaintData
              })
         }
         catch(err){

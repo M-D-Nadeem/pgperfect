@@ -94,7 +94,6 @@ const propertySlice=createSlice({
     name:"property",
     initialState:{
     propertyData:[],
-    complainData:[]
     },
     reducers:{},
     extraReducers:(builder)=>{
@@ -103,14 +102,7 @@ const propertySlice=createSlice({
             state.propertyData=[...action?.payload?.data]
            
         })
-        builder.addCase(getAllComplain.fulfilled,(state,action)=>{
         
-            state.complainData=[...action?.payload?.data]
-        })
-        builder.addCase(complainResolveByOwner.fulfilled,(state,action)=>{
-        
-            state.complainData=[...action?.payload?.data]
-        })
     }
 })
 export const { } = propertySlice.actions;

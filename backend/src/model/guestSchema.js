@@ -25,6 +25,9 @@ const guestSchema = new mongoose.Schema({
         amount:{type:Number},
         status:{type:String},
     },
+    role:{
+        type:String
+    },
     complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: 'complaint' }],
   });
   

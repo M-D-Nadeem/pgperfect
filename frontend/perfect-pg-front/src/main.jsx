@@ -24,7 +24,20 @@ import AddFeedback from './pages/AddFeedback.jsx'
 const appRouter=createBrowserRouter([
   {
     path:"/homepage",
-    element:<HomePage />
+    element:
+    <HomePage />
+   },
+   {
+    path:"/aboutuspage",
+    element:<About />
+   },
+   {
+    path:"/contactus",
+    element:
+    <Provider store={store} >
+    <ContactUs />
+    <Toaster />
+    </Provider>
    },
    {
     path:"/signup",
@@ -42,6 +55,14 @@ const appRouter=createBrowserRouter([
     <Toaster />
     </Provider>
    },
+   {
+    path:"/login",
+    element:
+    <Provider store={store} >
+    <LogInpage />
+    <Toaster />
+    </Provider>
+   },
      {
       
       path:"/",
@@ -54,11 +75,6 @@ const appRouter=createBrowserRouter([
       </Provider>,
       children:[
         
-     
-     {
-      path:"/login",
-      element:<LogInpage />
-     },
      {
       path:"/adduser",
       element:<TenantForm />
@@ -80,19 +96,13 @@ const appRouter=createBrowserRouter([
       path:"/updateuserlogin",
       element:<UpdateUserLogin />
      },
-     {
-      path:"/contactus",
-      element:<ContactUs />
-     },
+     
      {
       path:"/admindashboard",
       element:<AdminDashboard />
      },
      
-     {
-      path:"/aboutuspage",
-      element:<About />
-     },
+    
      {
       path:"/studentdashboard",
       element:<StudentDashboard />

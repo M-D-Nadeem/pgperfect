@@ -1,3 +1,4 @@
+import AppError from "../helper/errorHandler.js";
 import complaint from "../model/complainSchema.js";
 import property from "../model/propertySchema.js";
 
@@ -26,19 +27,21 @@ const getComplaintsSummary = async (req, res) => {
       );
        console.log(summary);
 
-      res.status(200).json({
+     return res.status(200).json({
         sucess:true,
         data:summary
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return next(new AppError(error.message,500))
     }
   };
 
   const getComplaintsSummaryByProperty = async (req, res) => {
+    const ownerId=req.owner.id
     try {
-      const properties = await property.find().populate('complaints');
-  
+      const prop = await property.find().populate('complaints');
+      
+      const properties=prop.filter((ele)=>ele.owner==ownerId)
       const summaryByProperty = properties.map((propertyInfo) => {
         const propertySummary = propertyInfo.complaints.reduce(
           (acc, complaint) => {
@@ -60,12 +63,12 @@ const getComplaintsSummary = async (req, res) => {
         return propertySummary;
       });
   
-      res.status(200).json({
+     return res.status(200).json({
         sucess:true,
         data:summaryByProperty
       });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return next(new AppError(error.message,500))
     }
   };
 
@@ -80,9 +83,55 @@ const getComplaintsSummary = async (req, res) => {
         const complaints=comp.filter((ele)=>{
             return ele.property.owner==ownerId
         })
-      res.status(200).json(complaints);
+      return res.status(200).json(complaints);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return next(new AppError(error.message,500))
     }
   };
-  export {getComplaintsSummary,getComplaintsSummaryByProperty,getComplaintsDetails}
+
+  const calculateRating=async (req,res,next)=>{
+    const { propertyId } = req.params;
+
+    try {
+      const complaints = await complaint.find({ property: propertyId });
+  
+      if (!complaints.length) {
+        return res.status(404).json({ message: 'No complaints found for this property' });
+      }
+  
+      let totalPoints = 100; 
+      let totalComplaints = complaints.length;
+  
+      complaints.forEach((complaint) => {
+        if (complaint.status === 'Pending') {
+          totalPoints -= 10;
+        } else if (complaint.status === 'Resolved' && complaint.resolvedAt) {
+          const resolutionTime = (complaint.resolvedAt - complaint.createdAt) / (1000 * 60 * 60 * 24);
+  
+          if (resolutionTime <= 1) {
+            totalPoints += 5; // Add full points for quick resolutions
+          } else if (resolutionTime <= 3) {
+            totalPoints += 3; // Add moderate points for resolutions within 2-3 days
+          } else if (resolutionTime <= 7) {
+            totalPoints += 1; // Add fewer points for resolutions within a week
+          } else {
+            totalPoints += 0.5; // Add minimal points for resolutions after a week
+          }
+        }
+      });
+  
+      const rating = Math.max(0, Math.min(5, totalPoints / 20)); // Normalize to a 5-star rating system
+  
+     return res.status(200).json({ 
+        sucess:true,
+        message:"Rating calculated sucessfully",
+        data:{propertyId, rating, totalComplaints }
+      });
+    } catch (error) {
+     return next(new AppError(error.message,500))
+    }
+  };
+  
+  export {getComplaintsSummary,getComplaintsSummaryByProperty,getComplaintsDetails
+    ,calculateRating
+  }

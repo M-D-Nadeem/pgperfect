@@ -28,7 +28,7 @@ const propertySchema = new mongoose.Schema({
         6: [roomSchema],
       },
 
-    ratings: [{ guest: { type: mongoose.Schema.Types.ObjectId, ref: 'guest'},
+    ratings: [{ guest: { type: mongoose.Schema.Types.ObjectId, ref: 'complaint'},
                 rating: { type: Number, default: 3 }, // Example: 1 to 5 
 }],
 

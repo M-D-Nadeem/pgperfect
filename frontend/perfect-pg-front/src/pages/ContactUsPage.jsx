@@ -5,6 +5,7 @@ import { FaMapLocationDot } from "react-icons/fa6"
 import {MdOutgoingMail}  from "react-icons/md"
 import { contactAdmin } from "../redux/slice/userSlice"
 import { useDispatch } from "react-redux"
+import Navbar from "./HomePage/Navbar"
 const ContactUs=()=>{
     const dispatch=useDispatch()
     const [formData,setFormData]=useState({
@@ -43,7 +44,8 @@ const ContactUs=()=>{
 }
     return(
         <div>
-        <nav className="h-[85px] border-b-2"></nav>
+          <Navbar />
+        
         <div className="ml-4 flex flex-wrap justify-center gap-20 p-8">
           <div className="building_card border-2 w-96 h-72 bg-slate-100 rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <div className="w-full h-[200px] flex justify-center overflow-hidden">
