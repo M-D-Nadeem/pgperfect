@@ -12,11 +12,13 @@ dotenv.config()
 app.use(express.json()) //Sucessfully allow to send a json data during res.status.json
 app.use(cookieParser()) //Sucessfully allow to reed the cookie 
 app.use(express.urlencoded({extended:true}))
-app.use(cors({
-    origin:[process.env.CLIENT_URL],
-    credentials:true
-})) 
-
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    credentials: true,
+  })
+); 
+// app.use(cors())
 app.use("/ping",(req,res)=>{
     res.send("Pong")
 })
