@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 function TenantForm() {
     const dispatch=useDispatch()
     const {state}=useLocation()
-    const cards=state.state.cards
+    const cards=state.cards
     console.log(cards);
     const [userData,setUserData]=useState({
         name:"",

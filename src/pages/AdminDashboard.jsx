@@ -11,7 +11,7 @@ function AdminDashboard() {
 
     async function loadProperties() {
         const response = await dispatch(getAllProperty());
-        if (response?.payload?.success) {
+        if (response?.payload?.sucess) {
             setPropertyData(response?.payload?.data);
         }
     }
