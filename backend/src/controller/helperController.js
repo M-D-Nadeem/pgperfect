@@ -2,6 +2,7 @@ import AppError from "../helper/errorHandler.js";
 import complaint from "../model/complainSchema.js";
 import property from "../model/propertySchema.js";
 
+
 const getComplaintsSummary = async (req, res) => {
     const ownerId=req.owner.id
     try {
@@ -91,12 +92,18 @@ const getComplaintsSummary = async (req, res) => {
 
   const calculateRating=async (req,res,next)=>{
     const { propertyId } = req.params;
-
+    console.log(propertyId);
     try {
       const complaints = await complaint.find({ property: propertyId });
-  
-      if (!complaints.length) {
-        return res.status(404).json({ message: 'No complaints found for this property' });
+      console.log(complaints);
+      const propertyInfo=await property.findById(propertyId)
+      if (!complaints || complaints.length==0) {
+        console.log('No complaints found for this property');
+        return res.status(200).json({ 
+          sucess:false,
+          message:"No complaints found for this property",
+          
+        });
       }
   
       let totalPoints = 100; 
@@ -119,9 +126,12 @@ const getComplaintsSummary = async (req, res) => {
           }
         }
       });
-  
+       
       const rating = Math.max(0, Math.min(5, totalPoints / 20)); // Normalize to a 5-star rating system
-  
+      console.log(rating);
+      propertyInfo.rating=rating
+
+      await propertyInfo.save()
      return res.status(200).json({ 
         sucess:true,
         message:"Rating calculated sucessfully",

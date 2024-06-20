@@ -5,9 +5,10 @@ import property from "../model/propertySchema.js"
 import fs from "fs/promises"
 import guest from "../model/guestSchema.js"
 import crypto from "crypto"
+// import CryptoJS from "crypto-js"
 import nodemailer from "nodemailer"
 import complaint from "../model/complainSchema.js"
-import razorpay  from "razorpay"
+
 import { instance } from "../../server.js"
 import feedback from "../model/feedbackSchema.js";
 
@@ -123,8 +124,8 @@ return res.status(200).json({
 }
 const createProperty=async (req,res,next)=>{
     const ownerId=req.owner.id
-    const {name,discription,category,address,city,state,zipCode,facilities}=req.body
-    if(!name || !address || !city || !state || !zipCode || !category){
+    const {name,discription,category,address,city,state,zipCode,facilities,startingAmount}=req.body
+    if(!name || !address || !city || !state || !zipCode || !category || !startingAmount){
         return next(new AppError("All fildes are requires",404))
     }
     let propertyPhotoResult;
@@ -147,7 +148,7 @@ const createProperty=async (req,res,next)=>{
         req.files.map((file)=> fs.rm(`uploads/${file.filename}`))
         console.log(propertyPhotoResult);
     }
-    const newProperty = new property({ owner: ownerId, name,discription, category, address, city, state, zipCode, facilities, property_photos: propertyPhotoResult });
+    const newProperty = new property({ owner: ownerId, name,discription, category, address, city, state, zipCode, facilities, property_photos: propertyPhotoResult,startingAmount });
     const savedProperty = await newProperty.save();
     await owner.findByIdAndUpdate(ownerId, { $push: { properties: savedProperty._id } });
     return res.status(200).json({
@@ -428,7 +429,7 @@ const getAllProperty=async (req,res,next)=>{
     //   };
 
       const addGuest=async (req,res,next)=>{
-        const {name,phone,email,roomType,roomNo,propertyId}=req.body
+        const {name,phone,email,roomType,roomNo,amount,propertyId}=req.body
         if(!name || !phone || !email || !roomType || !roomNo || !propertyId){
             return next(new AppError("All fildes are required",404))
         } 
@@ -447,6 +448,7 @@ const getAllProperty=async (req,res,next)=>{
              const uniqueId = hash.digest('hex');
              guestInfo.loginId=email
              guestInfo.loginPassword=uniqueId
+             guestInfo.subscription.amount=amount
              guestInfo.save()
  
 

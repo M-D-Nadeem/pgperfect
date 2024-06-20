@@ -4,7 +4,7 @@ import userjwtAuth from "../middleware/userMiddleware.js"
 import upload from "../middleware/multerMiddleware.js"
 const userRouter=express.Router()
 
-userRouter.get("/property/search",searchProperty)
+userRouter.post("/property/search",searchProperty)
 userRouter.get("/property/showall",showAllProperty)
 userRouter.post("/sendmessage/:propertyId",sendEmailToOwner)
 userRouter.post("/login",loginDashboard)

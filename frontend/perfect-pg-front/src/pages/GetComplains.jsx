@@ -58,7 +58,7 @@ const GetComplains=({propertyId})=>{
                 </tr>
               </thead>
               <tbody>
-              { complaintData.map((ele,idx)=>{
+              {complaintData.length!=0 && complaintData.map((ele,idx)=>{
                 return(
                 <tr>
                   <td className="hover:bg-white border-b border-gray-300 p-2 text-sm">

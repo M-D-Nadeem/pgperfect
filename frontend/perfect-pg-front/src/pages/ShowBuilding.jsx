@@ -9,7 +9,7 @@ import CorosalPropertyImage from "./CorosalPropertyImg";
 
 function ShowBuilding() {
     const {state}=useLocation()
-   
+  
     const [st,setSt]=useState(state)
     const navigate=useNavigate()
     const dispatch=useDispatch()

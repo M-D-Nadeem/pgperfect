@@ -7,5 +7,5 @@ const helperRouter=express.Router()
 helperRouter.get("/complainSummery",jwtAuth,getComplaintsSummary)
 helperRouter.get("/complainSummeryByProperty",jwtAuth,getComplaintsSummaryByProperty)
 helperRouter.get("/getAllComplainsDetailes/:category",jwtAuth,getComplaintsDetails)
-helperRouter.get("/rating/:propertyId",calculateRating)
+helperRouter.post("/rating/:propertyId",calculateRating)
 export default helperRouter

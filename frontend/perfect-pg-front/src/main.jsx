@@ -20,6 +20,7 @@ import HomePage from './pages/HomePage.jsx'
 import About from './pages/AboutUsPage.jsx'
 import StudentDashboard from './pages/StudentDashboard.jsx'
 import AddFeedback from './pages/AddFeedback.jsx'
+import FindMyPG from './pages/searchPage/findMyPg.jsx'
 
 const appRouter=createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const appRouter=createBrowserRouter([
      {
       path:"/addfeedback",
       element:<AddFeedback />
+     },
+     {
+      path:"/findpg",
+      element:<FindMyPG />
      }
     ]
      }

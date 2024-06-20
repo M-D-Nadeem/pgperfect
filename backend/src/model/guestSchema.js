@@ -14,10 +14,9 @@ const guestSchema = new mongoose.Schema({
         roomNo:{type:Number,required:true},
     },
     subscription:{
-        id:{type:String},
-        link:{type:String},
         amount:{type:Number},
-        status:{type:String},
+        paymentDate: { type: Date, default: Date.now },
+        lastPaymentDate: { type: Date, default: null }
     },
     deposit:{
         id:{type:String},

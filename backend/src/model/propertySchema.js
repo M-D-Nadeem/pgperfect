@@ -15,6 +15,7 @@ const propertySchema = new mongoose.Schema({
     city: { type: String, required: [true,"City is required"] },
     state: { type: String, required: [true,"State is required"] },
     zipCode: { type: String, required: [true,"zip code is required"] },
+    startingAmount:{type:Number,required:true},
     facilities: { type: String }, // Example: ['WiFi', 'Food', 'Laundry']
     property_photos: [{ public_id:{type:String},
                        secure_url:{type:String}
@@ -28,9 +29,13 @@ const propertySchema = new mongoose.Schema({
         6: [roomSchema],
       },
 
-    ratings: [{ guest: { type: mongoose.Schema.Types.ObjectId, ref: 'complaint'},
-                rating: { type: Number, default: 3 }, // Example: 1 to 5 
-}],
+//     ratings: [{ guest: { type: mongoose.Schema.Types.ObjectId, ref: 'complaint'},
+//                 rating: { type: Number, default: 3 }, // Example: 1 to 5 
+// }],
+rating:{
+  type:Number,
+  default:3
+},
 
 complaints: [
   {

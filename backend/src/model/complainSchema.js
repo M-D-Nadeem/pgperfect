@@ -18,7 +18,7 @@ const complaintSchema = new mongoose.Schema({
     // approvedByGuest: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     resolvedAt: { type: Date },
-  });
+  }); 
   
   export default mongoose.model('complaint', complaintSchema);
 

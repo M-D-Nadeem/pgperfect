@@ -12,7 +12,7 @@ import feedback from "../model/feedbackSchema.js";
 const searchProperty=async (req,res,next)=>{
     const {city,state,category}=req.body 
     if(!city || !state ){
-        return next(new AppError("All fildes are required",404))
+        return next(new AppError("All fildes are required",404)) 
     }
     try{ 
         const properties = await property.find({
@@ -23,11 +23,54 @@ const searchProperty=async (req,res,next)=>{
           
           const result=properties.map(async (ele)=>{
             let ownerInfo=await owner.findById(ele.owner)
-            // console.log(ele);
+            
+              const complaints = await complaint.find({ property: ele._id });
+              console.log(complaints);
+              const propertyInfo=await property.findById(ele._id)
+              if (!complaints || complaints.length==0) {
+                console.log('No complaints found for this property');
+                //  res.status(200).json({ 
+                //   sucess:false,
+                //   message:"No complaints found for this property",
+                  
+                // });
+              }
+              
+          else{
+              let totalPoints = 100; 
+              let totalComplaints = complaints.length;
+          
+              complaints.forEach((complaint) => {
+                if (complaint.status === 'Pending') {
+                  totalPoints -= 10;
+                } else if (complaint.status === 'Resolved' && complaint.resolvedAt) {
+                  const resolutionTime = (complaint.resolvedAt - complaint.createdAt) / (1000 * 60 * 60 * 24);
+          
+                  if (resolutionTime <= 1) {
+                    totalPoints += 5; // Add full points for quick resolutions
+                  } else if (resolutionTime <= 3) {
+                    totalPoints += 3; // Add moderate points for resolutions within 2-3 days
+                  } else if (resolutionTime <= 7) {
+                    totalPoints += 1; // Add fewer points for resolutions within a week
+                  } else {
+                    totalPoints += 0.5; // Add minimal points for resolutions after a week
+                  }
+                }
+              });
+              
+              const rating = Math.max(0, Math.min(5, totalPoints / 20)); // Normalize to a 5-star rating system
+              console.log(rating);
+              propertyInfo.rating=rating
+        
+              await propertyInfo.save()
+            }
+        
             return ({
+                rating:propertyInfo.rating,
                 propertyId:ele._id,
                 ownerName:ownerInfo.name,
                 ownerPhone:ownerInfo.phone,
+                startingAmount:ele.startingAmount,
                 name:ele.name,
                 discription:ele.discription,
                 category:ele.category,
@@ -37,7 +80,7 @@ const searchProperty=async (req,res,next)=>{
                 zipCode:ele.zipCode,
                 facilities:ele.facilities,
                 property_photos:ele.property_photos,
-                ratings:ele.ratings,
+                
                 
             })
           })
@@ -61,10 +104,12 @@ const showAllProperty=async (req,res,next)=>{
       let ownerInfo=await owner.findById(ele.owner)
       // console.log(ele);
       return ({
+         rating:ele.rating,
           propertyId:ele._id,
           ownerName:ownerInfo.name,
           ownerPhone:ownerInfo.phone,
           name:ele.name,
+          startingAmount:ele.startingAmount,
           discription:ele.discription,
           category:ele.category,
           address:ele.address,
@@ -73,7 +118,7 @@ const showAllProperty=async (req,res,next)=>{
           zipCode:ele.zipCode,
           facilities:ele.facilities,
           property_photos:ele.property_photos,
-          ratings:ele.ratings,
+        
           
       })
     })

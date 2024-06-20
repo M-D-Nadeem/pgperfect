@@ -3,6 +3,7 @@ import { addGuest, createProperty, createSubscription, deleteProperty, getAllCom
 import jwtAuth from "../middleware/ownerMiddleware.js"
 import upload from "../middleware/multerMiddleware.js"
 import authorizedRoles from "../middleware/commonMiddleware.js"
+import  { checkPaymentStatus,createPayment, getRevenueData } from "../controller/testConroller.js"
 
 const ownerRouter=express.Router()
 ownerRouter.post("/signup",signUp)
@@ -26,8 +27,9 @@ ownerRouter.post("/sendlogin/:guestId",jwtAuth,sendLoginIdToGuest)
 
 ownerRouter.get("/allcomplains/:propertyId",getAllComplains)
 ownerRouter.get("/complain/:complainId",getComplainById)
-ownerRouter.post("/payment/subscribe",createSubscription)
-ownerRouter.get("/paymentKey",getPaymentApiKey1)
+ownerRouter.post("/payment/subscribe",createPayment)
+ownerRouter.get("/checkpaymentstatus/:userId",checkPaymentStatus)
+ownerRouter.get("/revenuedata",jwtAuth,getRevenueData)
 
 ownerRouter.route("/verify")
 .post(varifySubscribtion)

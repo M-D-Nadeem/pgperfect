@@ -5,74 +5,68 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { addComplain } from "../redux/slice/userSlice"
+import axiosInstance from "../helper/axiosInstance"
+import { checkPaymentStatus, createSubscription } from "../redux/slice/ownerSlice.js"
 
 const StudentDashboard=()=>{
     const userData=useSelector((store)=>store.user.data)
     const dispatch=useDispatch()
     const navigate=useNavigate()
-    const {fullName,email}=useSelector((store)=>store.auth.data)
-    const paymentDetails={
-        payment_id:"",
-        signature:"",
-        subscription_id:""
-    }
 
-    const [key,setKey]=useState("")
-    const subscription_id=userData.subscription.id
+
+    const [hasPaidThisMonth, setHasPaidThisMonth] = useState(true);
+    const [amount, setAmount] = useState(userData.subscription.amount);
     async function load(){
-       const response= await dispatch(getRazorpayId())   
-       setKey(response.payload.data)
-    }
+     
+      try {
+        const data={userId:userData._id}
+        const response=await dispatch(checkPaymentStatus(userData._id))
+        setHasPaidThisMonth(response?.payload?.hasPaidThisMonth);
+      } catch (error) {
+        console.error('Error checking payment status', error);
+      }
+    };
     useEffect(()=>{
         load()
     },[])
-    console.log(key);
+
+    // console.log(key);
     async function handelSubscribe(e){
-        e.preventDefault()
-        console.log(subscription_id);
-        if(!key || !subscription_id){
-            toast.error("Something went wrong")
-            return
+   
+        console.log(hasPaidThisMonth);
+        if(hasPaidThisMonth){
+          alert("Rent already payed for this month!")
         }
-
-        const option={
-            key:key, 
-            subscription_id:subscription_id,
-            name: 'Coursify Pvt. Ltd.',
-            description: 'Subscription',
-            amount:userData.subscription.amount,
-            currency:"INR",
+        else{
+          console.log(userData._id);
+          const sendData={userId:userData._id,amount:amount}
+          const responseSub=await dispatch(createSubscription(sendData))
+          console.log(responseSub);
+          if(responseSub?.payload?.sucess){
+          const options = {
+            key: 'rzp_test_uNroaW9UQ2EFbd',
+            amount: amount * 100,
+            currency: 'INR',
+            name: 'Payment System',
+            description: 'Test Transaction',
+            order_id: responseSub?.payload?.data,
+            handler: async (response) => {
+              alert('Payment successful');
+            },
+            prefill: {
+              name:userData.name,
+              email:userData.email
+            },
             theme: {
-                color: '#F37254'
-            },
-            prefill:{
-               email:email,
-               name:fullName
-            },
-           
-              handler:async function (response){
-                // console.log(response);
-                paymentDetails.payment_id=response.razorpay_payment_id
-                paymentDetails.signature=response.razorpay_signature
-                paymentDetails.subscription_id=response.razorpay_subscription_id
-
-                toast.success("Payment successfull")
-
-                // const res=await dispatch(varifySubscribtion(paymentDetails))
-                // console.log(res);
-                 //This varifySuvhbscribtion return sucess and message field from backend
-                // if(res?.payload?.sucess){
-                //     toast.success(res?.payload?.message)
-                
-                // }
-                // else{
-                //     toast.error(res?.payload?.message)
-                    
-                // }
-              }
+              color: '#3399cc'
+            }
+          };
+          const razorpay = new window.Razorpay(options);
+          razorpay.open();
+          load()
         }
-        const paymentObject=new window.Razorpay(option)
-        paymentObject.open()
+
+        }
 
     }
 
@@ -96,9 +90,9 @@ const StudentDashboard=()=>{
     function handelComplainData(e){
         const {name,value}=e.target 
         setComplainData({
-            //set all the values as it is
+            
             ...complainData,
-            //change the fullName to new value
+            
             [name]:value,
         })
     }
@@ -246,7 +240,7 @@ const StudentDashboard=()=>{
               <h4 className="p-4 text-center font-light text-sm">
                 * Terms and conditions applied *
               </h4>
-              <button onClick={handelSubscribe} className="w-full bg-blue-600 rounded-md text-white p-4 text-lg">
+              <button onClick={()=>handelSubscribe()} className="w-full bg-blue-600 rounded-md text-white p-4 text-lg">
                 Pay Now
               </button>
             </div>

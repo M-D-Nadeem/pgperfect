@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addGuest, createSubscription, sendLoginIdToGuest } from "../redux/slice/ownerSlice";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function TenantForm() {
     const dispatch=useDispatch()
     const {state}=useLocation()
-    const cards=state.state.cards
+    const cards=state.cards
     console.log(cards);
     const [userData,setUserData]=useState({
         name:"",
@@ -14,12 +15,13 @@ function TenantForm() {
         email:"",
         roomType:"",
         roomNo:"",
+        amount:"",
         propertyId:cards._id
     })
-    const [subscriptionData,setsubscriptionData]=useState({
-       userId:"",
-       amount:""
-    })
+    // const [subscriptionData,setsubscriptionData]=useState({
+    //    userId:"",
+    //    amount:""
+    // })
     function handelFormData(e){
         const {name,value}=e.target 
         setUserData({
@@ -30,18 +32,18 @@ function TenantForm() {
             
         })
     }
-    async function handelSubscriptionData(e){
-        const {name,value}=e.target 
-        setsubscriptionData({
-            //set all the values as it is
-            ...subscriptionData,
-            //change the fullName to new value
-            [name]:value
-        })
-    }
+    // async function handelSubscriptionData(e){
+    //     const {name,value}=e.target 
+    //     setsubscriptionData({
+    //         //set all the values as it is
+    //         ...subscriptionData,
+    //         //change the fullName to new value
+    //         [name]:value
+    //     })
+    // }
     async function onSubmit(e){
         e.preventDefault()
-        if(!userData.name || !userData.phone || !userData.email || !userData.roomType || !userData.roomNo ||!subscriptionData.amount){
+        if(!userData.name || !userData.phone || !userData.email || !userData.roomType || !userData.roomNo ||!amount){
             toast.error("Please fill all the details")
             return
         }
@@ -49,10 +51,10 @@ function TenantForm() {
         const response=await dispatch(addGuest(userData))
         if(response?.payload?.sucess){
             const userId=response?.payload?.data?._id
-            const sendData={userId:userId,amount:subscriptionData.amount}
-            const responseSub=await dispatch(createSubscription(sendData))
+            // const sendData={userId:userId,amount:subscriptionData.amount}
+            // const responseSub=await dispatch(createSubscription(sendData))
 
-            if(responseSub?.payload?.sucess){
+            // if(responseSub?.payload?.sucess){
                 console.log(userId);
                 const responseMessage=await dispatch(sendLoginIdToGuest(userId))
                 console.log(responseMessage?.payload);
@@ -71,7 +73,7 @@ function TenantForm() {
                 })
             }
             }
-        }
+        // }
        console.log(response?.payload);
     }
 
@@ -218,7 +220,7 @@ function TenantForm() {
                   type="number"
                   name="amount"
                   id="amount"
-                  onChange={handelSubscriptionData}
+                  onChange={handelFormData}
                   placeholder="Amount"
                   className="w-1/2 rounded-md border border-[#e0e0e0] bg-white py-2 px-4 text-black outline-none focus:border-blue-600 focus:shadow-md"
                 />

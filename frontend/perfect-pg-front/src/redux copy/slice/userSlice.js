@@ -106,15 +106,15 @@ export const searchPg=createAsyncThunk("/searchPg",async (data)=>{
     }
 })
 
-export const showAllProperty=createAsyncThunk("/showallproperty", async ()=>{
-    try{
-        const response=axiosInstance.get("/user/property/showall")
-        return (await response).data
-    }
-    catch(err){
-        toast.error(err)
-    }
-}) 
+// export const showAllProperty=createAsyncThunk("/showallproperty", async ()=>{
+//     try{
+//         const response=axiosInstance.get("/user/property/showall")
+//         return (await response).data
+//     }
+//     catch(err){
+//         toast.error(err)
+//     }
+// }) 
 export const calculateRating=createAsyncThunk("/calculateRating",async (propertyId)=>{
     try{
         const response=axiosInstance.post(`/helper/rating/${propertyId}`)
