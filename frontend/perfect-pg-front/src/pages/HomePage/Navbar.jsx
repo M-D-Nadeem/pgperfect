@@ -11,11 +11,11 @@ const Navbar = () => {
             </div>
 
             <div className="searchBar flex">
-        <a href="http://localhost:5173/homepage" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">Home</a>
-        <a href="http://localhost:5173/aboutuspage" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">About</a>
+        <a href="http://localhost:5174/homepage" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">Home</a>
+        <a href="http://localhost:5174/aboutuspage" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">About</a>
         <a href="/" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">Find My PG</a>
-        <a href="http://localhost:5173/signup" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">For PG Owners</a>
-        <a href="http://localhost:5173/contactus" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">Contacts</a>
+        <a href="http://localhost:5174/signup" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">For PG Owners</a>
+        <a href="http://localhost:5174/contactus" className="mx-5 font-semibold text-gray-500 hover:text-blue-500">Contacts</a>
       </div>
 
             <div className="buttons mr-5">
