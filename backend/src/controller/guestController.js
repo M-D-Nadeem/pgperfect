@@ -138,7 +138,7 @@ catch(err){
 const sendEmailToOwner=async (req,res,next)=>{
   const {name,phone,email,message}=req.body
   const propertyId=req.params.propertyId
-  
+  console.log(propertyId);
   if(!name || !phone || !email || !message){
     return next(new AppError("All fildes are required",404))
   }

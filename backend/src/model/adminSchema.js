@@ -6,6 +6,10 @@ const adminSchema=new mongoose.Schema({
         type:String,
         require:[true,"Email is required"],
         unique:[true,"Email must be unique"],
+        match: [
+            /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+            'Please fill in a valid email address',
+          ],
     },
 
 

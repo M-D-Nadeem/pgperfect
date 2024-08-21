@@ -35,7 +35,10 @@ function ShowBuilding() {
             </a>
           </div>
         </div>
-         <CorosalPropertyImage state={st} />
+        <div className="flex justify-center items-center">
+        <img src={st.cards.property_photos[0].secure_url } className="m-5 rounded-md w-[50%]" alt="" />
+        </div>
+         {/* <CorosalPropertyImage state={st} /> */}
         <div className="property_data flex flex-col items-center w-full h-min p-6">
           <h1 className="text-center font-semibold tracking-tighter text-2xl mb-2 ">
             Property Data

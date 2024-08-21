@@ -7,8 +7,11 @@ ChartJS.register(ArcElement, Tooltip, ChartDataLabels);
 
 import axiosInstance from '../helper/axiosInstance';
 import RevenueChart from './RevenueChart';
+import { useDispatch } from 'react-redux';
+import { getComlainSummery } from '../redux/slice/userSlice';
 
 const ComplaintsChart = () => {
+  const dispatch=useDispatch()
   const [summary, setSummary] = useState({});
   const [propertySummary, setPropertySummary] = useState([]);
 
@@ -18,8 +21,8 @@ const ComplaintsChart = () => {
   useEffect(() => {
     const fetchComplaintsData = async () => {
       try {
-        const response = await axiosInstance.get('/helper/complainSummery');
-        setSummary(response.data.data);
+        const response = await dispatch(getComlainSummery())
+        setSummary(response?.payload?.data);
       } catch (error) {
         console.error('Error fetching complaints data:', error);
       }

@@ -97,7 +97,7 @@ const SignupPage=()=>{
 
         <div className="uppertext text-md font-bold left-0">Sign up to <br /> <span className='text-blue-600 text-lg font-extrabold'>PG PERFECT</span></div>
 
-        <div className="text-md right-0 text-slate-400 ">Already have account? <br /><Link to="/login"><span className='text-lg text-black hover:font-bold cursor-pointer'> Log in here</span></Link>
+        <div className="text-md right-0 text-slate-400 ">Already have an account? <br /><Link to="/login"><span className='text-lg text-black hover:font-bold cursor-pointer'> Log in here</span></Link>
         </div>
       </div>
 
@@ -113,7 +113,7 @@ const SignupPage=()=>{
         <div className='text-md mx-1 my-5 '>
 
 
-          <h1 className='mx-1 font-semibold'>Your full name</h1>
+          <h1 className='mx-1 font-semibold'>Full Name*</h1>
 
           <div className='   flex border border-slate-400 rounded-md text-sm p-2'>
 
@@ -130,7 +130,7 @@ const SignupPage=()=>{
         <div className='text-md mx-1 my-5'>
 
 
-          <h1 className='mx-1 font-semibold'>Your Email Address</h1>
+          <h1 className='mx-1 font-semibold'>Email Address*</h1>
           <div className='   flex border border-slate-400 rounded-md p-2 text-sm'>
 
             <input type="text" 
@@ -146,7 +146,7 @@ const SignupPage=()=>{
         </div>
         <div className='text-md mx-1 my-5'>
 
-        <h1 className='mx-1 font-semibold'>Your Phone number</h1>
+        <h1 className='mx-1 font-semibold'>Phone Number*</h1>
           <div className='   flex border border-slate-400 rounded-md p-2 text-sm'>
 
             <input type="text" 
@@ -163,7 +163,7 @@ const SignupPage=()=>{
         <div className='text-md mx-1 my-5'>
 
 
-          <h1 className='mx-1 font-semibold'>Create a Password</h1>
+          <h1 className='mx-1 font-semibold'>Create a Password*</h1>
 
           <div className='   flex items-center border border-slate-400 rounded-md p-2 text-sm'>
 
@@ -191,7 +191,7 @@ const SignupPage=()=>{
         <div className='text-md mx-1 my-5'>
 
 
-          <h1 className='mx-1 font-semibold'>Confirm Your Password</h1>
+          <h1 className='mx-1 font-semibold'>Confirm your Password*</h1>
 
           <div className='   flex items-center border border-slate-400 rounded-md p-2 text-sm'>
 

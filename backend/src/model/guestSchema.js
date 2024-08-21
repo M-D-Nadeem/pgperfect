@@ -7,23 +7,30 @@ const guestSchema = new mongoose.Schema({
     
     propertyId:{type:String,required:true},
     name: { type: String, required: true },
-    email: { type: String, required: true},
+    email: { type: String, required: true,match: [
+        /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+        'Please fill in a valid email address',
+      ]},
     phone: { type: String, required: true },
     room: {
         roomShearing:{type:Number,required:true},
         roomNo:{type:Number,required:true},
+    },
+    deposit:{
+        amount:{type:Number},
+        status:{type:Boolean,default:false}
     },
     subscription:{
         amount:{type:Number},
         paymentDate: { type: Date, default: Date.now },
         lastPaymentDate: { type: Date, default: null }
     },
-    deposit:{
-        id:{type:String},
-        link:{type:String},
-        amount:{type:Number},
-        status:{type:String},
-    },
+    // deposit:{
+    //     id:{type:String},
+    //     link:{type:String},
+    //     amount:{type:Number},
+    //     status:{type:String},
+    // },
     role:{
         type:String
     },

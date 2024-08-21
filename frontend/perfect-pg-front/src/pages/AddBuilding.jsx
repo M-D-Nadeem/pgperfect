@@ -2,9 +2,11 @@ import { useState } from "react"
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux"
 import { createProperty } from "../redux/slice/propertySlice";
+import { useNavigate } from "react-router-dom";
 
 const AddBuilding=()=>{
     const dispatch=useDispatch()
+    const navigate=useNavigate()
     const [category, setCategory] = useState('');
     const [propertyData,setPropertyData]=useState({
         name:"",
@@ -15,18 +17,18 @@ const AddBuilding=()=>{
         state:"",
         zipCode:"",
         facilities:"",
-        
+        startingPrice:""
     })
     const [selectedImages, setSelectedImages] = useState([]);
 
     const handleImageChange = (e) => {
-        console.log(e.target.files);
-      if (e.target.files) {
-        const filesArray = Array.from(e.target.files);
-        
-        setSelectedImages((prevImages) => prevImages.concat(filesArray));
-      }
-    };
+      console.log(e.target.files);
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      
+      setSelectedImages((prevImages) => prevImages.concat(filesArray));
+    }
+  };
     function handelPropertyData(e){
         const {name,value}=e.target 
         setPropertyData({
@@ -41,12 +43,12 @@ const AddBuilding=()=>{
       
         if(!propertyData.name || !propertyData.discription || !category || 
             !propertyData.address || !propertyData.city ||!propertyData.state 
-            ||!propertyData.zipCode || !propertyData.facilities){
+            ||!propertyData.zipCode || !propertyData.facilities ||!propertyData.startingPrice){
             toast.error("Please fill all the details")
             return
         }
-       
-        const formData=new FormData()
+       console.log(propertyData);
+      const formData=new FormData()
       formData.append("name",propertyData.name)
       formData.append("discription",propertyData.discription)
       formData.append("category",category)
@@ -55,11 +57,15 @@ const AddBuilding=()=>{
       formData.append("state",propertyData.state)
       formData.append("zipCode",propertyData.zipCode)
       formData.append("facilities",propertyData.facilities)
+      formData.append("startingAmount",propertyData.startingPrice)
       selectedImages.forEach((image) => {
         formData.append('propertyPhoto', image);
       });
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
 
-      const response=await dispatch(createProperty(formData))
+      const response = await dispatch(createProperty(formData))
       console.log(response?.payload);
       if(response?.payload?.sucess){
         setPropertyData({
@@ -73,6 +79,7 @@ const AddBuilding=()=>{
             facilities:"",
         })
         setSelectedImages([])
+        navigate("/admindashboard")
       }
     }
     return(
@@ -183,6 +190,21 @@ const AddBuilding=()=>{
                   placeholder="Type your message"
                   className="w-1/2 rounded-md resize-none border border-[#e0e0e0] bg-white py-2 px-4 text-black outline-none focus:border-blue-600 focus:shadow-md"
                 ></textarea>
+              </div>
+              <div className="mb-5 flex flex-col">
+                <label htmlFor="startingPrice" className=" block font-medium">
+                Starting Price
+                </label>
+                <input
+                  type="text"
+                  name="startingPrice"
+                  onChange={handelPropertyData}
+                  required={true} 
+                  value={propertyData.startingPrice}
+                  id="startingPrice"
+                  placeholder="Starting Price"
+                  className="w-1/2 rounded-md border border-[#e0e0e0] bg-white py-2 px-4 text-black outline-none focus:border-blue-600 focus:shadow-md"
+                />
               </div>
               <div className="mb-5 flex flex-col">
                 <label htmlFor="address" className=" block font-medium">

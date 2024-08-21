@@ -4,6 +4,7 @@ import axiosInstance from "../../helper/axiosInstance";
 
 export const createProperty=createAsyncThunk("/property/create",async (data)=>{
     try{
+        console.log(data);
         const response=axiosInstance.post("/owner/property/add",data)
         toast.promise(response,{
             loading:"Adding new property",

@@ -3,16 +3,21 @@ import { useDispatch } from 'react-redux';
 import { calculateRating, searchPg } from '../../redux/slice/userSlice';
 import axiosInstance from '../../helper/axiosInstance';
 import { calcLength } from 'framer-motion';
+import PropertyCard from './propertySheet';
+import toast from 'react-hot-toast';
+
 
 const FormComponent = () => {
   const dispatch=useDispatch()
+  
 
   const [formData,setFormData]=useState({
     city:"",
     state:"",
     category:""
   })
-  
+  const [propertyData,setPropertyData]=useState([])
+  const [printResult,setPrintResult]=useState("")
   const handleFormData = (e) => {
     
         const {name,value}=e.target 
@@ -27,21 +32,25 @@ const FormComponent = () => {
 
    const handleSubmit =async (e) => {
     e.preventDefault();
-
+     
 
     const response=await dispatch(searchPg(formData))
-    
-    response?.payload?.data.sort((a, b) => b.rating - a.rating);
     console.log(response);
-    const propertyIds=response?.payload?.data.map((ele)=>{
-        return ele.propertyId
-    })
-    console.log(propertyIds);
+    if(response?.payload?.data.length==0){
+      toast.error("No result found")
+   setPrintResult("No result found")
+    }
+    response?.payload?.data.sort((a, b) => b.rating - a.rating);
+    // console.log(response);
+     setPropertyData(response?.payload?.data)
+    
    
   };
+  console.log(propertyData);
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <div className='m-6'>
+    <form onSubmit={handleSubmit} className="w-full flex gap-40 bg-slate-200 p-8 rounded-lg shadow-lg">
       <div className="mb-4">
         <label htmlFor="city" className="block text-sm font-medium text-gray-700">
           City:
@@ -82,7 +91,7 @@ const FormComponent = () => {
       </div>
       <div className="mb-4">
         <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-          state:
+          State:
         </label>
         <select
           id="state"
@@ -101,11 +110,15 @@ const FormComponent = () => {
       </div>
       <button
         type="submit"
-        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        onClick={()=>handleSubmit()}
+        className=" bg-indigo-600 hover:bg-indigo-700 text-white w-40 font-bold   px-6 rounded-xl focus:outline-none focus:shadow-outline shadow-md shadow-blue-400"
       >
         Submit
       </button>
     </form>
+   { propertyData.length!=0? <PropertyCard info={propertyData} />:<div className='m-2 mx-[50%]  text-center py-2 font-semibold w-36 h-10 rounded-lg'>{printResult}</div>}
+
+    </div>
   );
 };
 

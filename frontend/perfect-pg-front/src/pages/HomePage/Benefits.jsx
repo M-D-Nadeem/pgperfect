@@ -25,7 +25,7 @@ const Benefits = () => {
       <div ref={ref} className="right w-1/2">
         <div className="text">
           <motion.h1 className='text-4xl text-center mx-5 font-semibold text-blue-400' style={{ opacity: 0 }} animate={animationControls}>
-            How it Helps in pg management
+            How it helps in PG Management?
           </motion.h1>
           <motion.div className="para" style={{ opacity: 0 }} animate={animationControls}>
             <p className='mx-5 my-10 text-wrap'>

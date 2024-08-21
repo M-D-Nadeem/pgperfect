@@ -115,7 +115,7 @@ function AdminDashboard() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() =>
-                              navigate("/adduser", { state: { cards: { ...data } } })
+                              navigate("/adduser", { state: { st: {cards:{ ...data }} } })
                             }
                             className="btn btn-outline btn-accent w-full"
                           >

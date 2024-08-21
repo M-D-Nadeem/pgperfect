@@ -46,7 +46,7 @@ const Nav=()=>{
     return(
         <nav className="py-4 px-10 flex items-center gap-28">
             <div className="flex gap-16 text-xl font-bold tracking-tighter">
-              <a className="text-blue-600 w-32" href="/">PG PERFECT</a>
+              <a className="text-blue-600 w-32" href="">PG PERFECT</a>
               <button onClick={()=>handelDashboardButton()} className="text-center rounded-lg text-sm font-semibold px-4 py-2 bg-blue-600 text-white">
                 Dashboard
               </button>

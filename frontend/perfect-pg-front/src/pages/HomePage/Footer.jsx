@@ -42,10 +42,10 @@ const Footer = () => {
           >
             <h2 className="text-xl font-bold mb-4">Quick Links</h2>
             <ul>
-              <li><a href="#" className="text-blue-400 hover:text-blue-600">Home</a></li>
-              <li><a href="#" className="text-blue-400 hover:text-blue-600">About</a></li>
-              <li><a href="#" className="text-blue-400 hover:text-blue-600">Services</a></li>
-              <li><a href="#" className="text-blue-400 hover:text-blue-600">Contact</a></li>
+              <li><a href="http://localhost:5174/homepage" className="text-blue-400 hover:text-blue-600">Home</a></li>
+              <li><a href="http://localhost:5174/aboutuspage" className="text-blue-400 hover:text-blue-600">About</a></li>
+              {/* <li><a href="#" className="text-blue-400 hover:text-blue-600">Services</a></li> */}
+              <li><a href="http://localhost:5174/contactus" className="text-blue-400 hover:text-blue-600">Contact</a></li>
             </ul>
           </motion.div>
           <motion.div

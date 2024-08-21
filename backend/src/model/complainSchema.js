@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 const complaintSchema = new mongoose.Schema({
     guest: { type: mongoose.Schema.Types.ObjectId, ref: 'guest' },
-    property: { type: mongoose.Schema.Types.ObjectId, ref: 'property', required: true },
+
+    property: { type: mongoose.Schema.Types.ObjectId, ref: 'property' },
    
     type: {
       type: String,

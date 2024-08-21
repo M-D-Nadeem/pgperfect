@@ -41,6 +41,14 @@ const appRouter=createBrowserRouter([
     </Provider>
    },
    {
+    path:"/findpg",
+    element:
+    <Provider store={store} >
+    <FindMyPG />
+    <Toaster />
+    </Provider>
+   },
+   {
     path:"/signup",
     element:
     <Provider store={store} >
@@ -112,10 +120,7 @@ const appRouter=createBrowserRouter([
       path:"/addfeedback",
       element:<AddFeedback />
      },
-     {
-      path:"/findpg",
-      element:<FindMyPG />
-     }
+    
     ]
      }
 ])

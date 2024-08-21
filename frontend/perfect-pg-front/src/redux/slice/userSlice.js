@@ -65,9 +65,9 @@ export const addComplain=createAsyncThunk("/addcomplain",async (data)=>{
     try{
         const response=axiosInstance.post("/user/addcomplain",data)
         toast.promise(response,{
-            loading:"Adding Complain",
-            success:"Complain added sucessfully",
-            error:"Failed to add complain"
+            loading:"Adding Complaint",
+            success:"Complaint added sucessfully",
+            error:"Failed to add complaint"
         })
         return (await response).data
     }
@@ -131,6 +131,39 @@ export const calculateRating=createAsyncThunk("/calculateRating",async (property
         toast.error(err)
     }
 })
+
+export const sendEmailToOwner=createAsyncThunk("/sendemail",async (data)=>{
+    try{
+        const response=axiosInstance.post(`/user/sendmessage/${data.propertyId}`,data)
+        toast.promise(response,{
+            loading:"Sending message...",
+            success: (data) => {
+                return data?.message;
+            },
+            error:"Opps! Failed to send message"
+        })
+    }
+    catch(err){
+        toast.error(err)
+    }
+})
+export const getComlainSummery=createAsyncThunk("/complain",async ()=>{
+    try{
+        const response=axiosInstance.get("/helper/complainSummery")
+        toast.promise(response,{
+            loading:"Sending message...",
+            success: (data) => {
+                return data?.message;
+            },
+            error:"Opps! Failed to send message"
+        })
+        return (await response).data
+    }
+    catch(err){
+        toast.error(err)
+    }
+})
+
 
 const userSlice=createSlice({
     name:"auth",

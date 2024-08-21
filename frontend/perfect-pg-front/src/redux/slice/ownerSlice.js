@@ -63,6 +63,28 @@ export const checkPaymentStatus=createAsyncThunk("/checkpaymentstatus",async (us
       toast.error(err?.response?.data?.message)
   }
 })
+
+export const createDeposit=createAsyncThunk("/createdeposit", async (data)=>{
+   try{
+      console.log(data);
+       const response=axiosInstance.post("/owner/payment/deposit",data)
+       return (await response).data
+   }
+   catch(err){
+       toast.error(err?.response?.data?.message)
+   }
+}
+)
+
+export const checkDepositStatus=createAsyncThunk("/checkdepositstatus",async (userId)=>{
+   try{
+      const response=axiosInstance.get(`/owner/payment/checkdeposit/${userId}`)
+      return (await response).data
+   }
+   catch(err){
+      toast.error(err?.response?.data?.message)
+  }
+})
 const ownerSlice=createSlice({
      name:"guest",
      initialState:{

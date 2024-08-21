@@ -125,6 +125,7 @@ return res.status(200).json({
 const createProperty=async (req,res,next)=>{
     const ownerId=req.owner.id
     const {name,discription,category,address,city,state,zipCode,facilities,startingAmount}=req.body
+    console.log(name);
     if(!name || !address || !city || !state || !zipCode || !category || !startingAmount){
         return next(new AppError("All fildes are requires",404))
     }
@@ -263,173 +264,10 @@ const getAllProperty=async (req,res,next)=>{
     }
     };
 
-    // const addRoom=async (req,res,next)=>{
-    //     const propertyId=req.params.propertyId
-    //     const {  type, price } = req.body;
-    //     if(!propertyId || !type || !price){
-    //         return next(new AppError("All fildes are required",404))
-    //     }
-    //     try{
-    //         let roomPhotoResult;
-    //         if(req.files){
-    //             const files = req.files;
-    //             console.log(files);
-    //             let uploadPromises = files.map(async (file) => {
-    //               return await cloudinary.v2.uploader.upload(file.path, {
-    //                 folder: 'uploads'
-    //               });
-    //             });
-    //             let uploadResults = await Promise.all(uploadPromises);
-    //              roomPhotoResult=uploadResults.map((ele)=>{
-    //                 return {
-    //                 public_id: ele.public_id,
-    //                 secure_url: ele.secure_url
-    //             }})
-    //             // fs.rm(`uploads/${req.file.filename}`)
-    //             req.files.map((file)=> fs.rm(`uploads/${file.filename}`))
-    //             console.log(roomPhotoResult);
-    //         }
-    //         const newRoom = new room({ property: propertyId, type,price,room_photos: roomPhotoResult });
-    //         const savedRoom = await newRoom.save();
-    //         const propertyInfo=await property.findById(propertyId)
-    //         propertyInfo.rooms.push(savedRoom._id)
-    //         propertyInfo.countRooms=propertyInfo.rooms.length
-    //         await propertyInfo.save()
-    //         res.status(200).json({
-    //             sucess:true,
-    //             message:"Room added sucessfully",
-    //             data:savedRoom
-    //         });
-    //       }     
-    //       catch(err){
-    //         console.log("ERROR in adding room",err);
-    //         return next(new AppError(err.message,500))
-    //     }
-    // }
-    // const updateRoom=async (req,res,next)=>{
-    //     const roomId=req.params.roomId;
-    // if(!roomId){
-    //              return next(new AppError("Can not fetch roomId",404))
-    //          }
-    // try{
-    //        const roomInfo=await room.findByIdAndUpdate(roomId,
-    //         {
-    //             $set:req.body
-    //         },
-    //         {
-    //             runValidators:true    //Validates your req.body info from your Schema
-    //         })
-    //        if(!roomInfo){
-    //         return next(new AppError("No such room exist",404))
-    //        }
-           
-    //        if(req.files){
-    //         let files=req.files
-    //         roomInfo.room_photos.map((file)=>cloudinary.v2.uploader.destroy(file.public_id))
-
-    //         let uploadPromises = files.map(async (file) => {
-    //             return await cloudinary.v2.uploader.upload(file.path, {
-    //               folder: 'uploads'
-    //             });
-    //           });
-    //           let uploadResults = await Promise.all(uploadPromises);
-    //           let roomPhotoResult=uploadResults.map((ele)=>{
-    //               return {
-    //               public_id: ele.public_id,
-    //               secure_url: ele.secure_url
-    //           }})
-
-    //           req.files.map((file)=> fs.rm(`uploads/${file.filename}`))
-    //           console.log(roomPhotoResult);
-    //           await property.findByIdAndUpdate(roomId,{room_photos: roomPhotoResult})
-    //       }
-    //       return res.status(200).json({
-    //         sucess:true,
-    //         message:"Room information update sucessfull",
-    //         data:roomInfo
-    //        })
-    //     }
-    //     catch(err){
-    //         console.log("ERROR in updating room information",err);
-    //         return next(new AppError(err.message,500))
-    //     }
-    // }
-    // const deleteRoom = async (req, res) => {
-    //     const { roomId} = req.params;
-        
-    //     try {
-    //       const roomInfo=await room.findById(roomId)
-    //       const propertyId=roomInfo.property
-      
-    //       // Remove room from property
-    //       await property.findByIdAndUpdate(propertyId, { $pull: { rooms: roomId } });
-      
-    //       // Delete room
-    //       const deletedRoom = await room.findByIdAndDelete(roomId);
-      
-    //       if (!deletedRoom) {
-    //         return next(new AppError('Room not found',404))
-    //       }
-      
-    //       return res.status(200).json({
-    //         sucess:true,
-    //         message:"Room deleted sucessfull",
-    //        })
-    //     }  
-    //     catch(err){
-    //         console.log("ERROR in deleting room",err);
-    //         return next(new AppError(err.message,500))
-    //     }
-    //   };
-
-    //   const getRoomById = async (req, res,next) => {
-    //     const { roomId } = req.params;
-    //     try {
-
-    //     //   const room = await room.findById(roomId).populate('occupants');
-    //          const roomInfo = await room.findById(roomId)
-      
-    //       if (!roomInfo) {
-    //         return next(new AppError('Room not found',404))
-    //       }
-       
-    //       return res.status(200).json({
-    //         sucess:true,
-    //         message:"Room fetched sucessfull",
-    //         data:roomInfo
-    //        })
-    //     } 
-    //     catch(err){
-    //         console.log("ERROR in fetching room",err);
-    //         return next(new AppError(err.message,500))
-    //     }
-    //   };
-      
-    //   // Get a list of all rooms in a property
-    //   const getAllRooms = async (req, res) => {
-    //     const { propertyId } = req.params;
-    //     try {
-
-    //       const propertyInfo = await property.findById(propertyId).populate('rooms');
-      
-    //       if (!propertyInfo) {
-    //         return next(new AppError('Property not found' ,404))
-    //       }
-      
-    //       return res.status(200).json({
-    //         sucess:true,
-    //         message:"All rooms fetched sucessfull",
-    //         data:propertyInfo.rooms
-    //        })
-    //     } 
-    //     catch(err){
-    //         console.log("ERROR in fetching room",err);
-    //         return next(new AppError(err.message,500))
-    //     }
-    //   };
 
       const addGuest=async (req,res,next)=>{
-        const {name,phone,email,roomType,roomNo,amount,propertyId}=req.body
+        const {name,phone,email,roomType,roomNo,amount,propertyId,deposit}=req.body
+        console.log(propertyId);
         if(!name || !phone || !email || !roomType || !roomNo || !propertyId){
             return next(new AppError("All fildes are required",404))
         } 
@@ -449,6 +287,7 @@ const getAllProperty=async (req,res,next)=>{
              guestInfo.loginId=email
              guestInfo.loginPassword=uniqueId
              guestInfo.subscription.amount=amount
+             guestInfo.deposit.amount=deposit
              guestInfo.save()
  
 
@@ -507,12 +346,17 @@ const getAllProperty=async (req,res,next)=>{
 
       const getAllComplains=async (req,res,next)=>{
         const { propertyId } = req.params;
+        console.log(propertyId);
         try{
-            const complaints = await complaint.find({ property: propertyId }).populate('guest').populate("property")
-            
+            const complaints = await complaint.find({ property: propertyId })
+            .populate('guest')
+            .populate('property')
+            .maxTimeMS(30000); // Increase timeout  
+
+            console.log(complaints);
             const complaintData=complaints.filter((ele)=>ele.status=="Pending")
             return res.status(200).json({
-                sucess:true,
+                sucess:true, 
                 message:"Fetched all complaint sucessfully",
                 data:complaintData
              })
@@ -612,38 +456,7 @@ const getAllProperty=async (req,res,next)=>{
     //     }
     //   }
    
-    const createDeposit = async (req, res,next) => {
-        const {userId,amount}=req.body
     
-        try{
-            const userInfo=await guest.findById(userId)
-            
-            const orderOptions = {
-                amount: amount * 100, // amount in paise
-                currency: 'INR',
-                receipt: `receipt_${userId}_${Date.now()}`,
-                payment_capture: 1, // Auto capture the payment
-              };
-              const order = await instance.orders.create(orderOptions);
-              console.log(order);
-              
-          
-            userInfo.deposit.id=order.id
-            userInfo.deposit.status="created"
-            userInfo.deposit.link=order.short_url
-            userInfo.deposit.amount=amount
-            await userInfo.save()
-            
-            return res.status(200).json({
-                sucess:true,
-                message:"User deposit sucessful",
-                data:deposit
-            })
-          }
-          catch(err){
-            return next(new AppError("Failed to subscribe",500))
-          }
-        } 
 
    const createSubscription = async (req, res,next) => {
     const {userId,amount}=req.body
@@ -811,9 +624,10 @@ const getAllProperty=async (req,res,next)=>{
         try {
           const feedbackInfo = await feedback.findOne({ property: propertyId });
       
-          if (!feedback) {
-            return next(new AppError('Feedback not found for this property',404))
-          }
+          if (!feedbackInfo) {
+            return  res.status(200).json({
+                sucess:false,
+                message:"There is no feedback for this property"});          }
       
           const averages = {
             cleanliness: feedbackInfo.cleanliness.avg,
@@ -826,7 +640,7 @@ const getAllProperty=async (req,res,next)=>{
             bookingProcess: feedbackInfo.bookingProcess.avg,
           };
       
-          res.status(200).json({
+        return  res.status(200).json({
             sucess:true,
             data: averages });
         } catch (err) {

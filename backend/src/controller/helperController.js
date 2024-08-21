@@ -3,14 +3,18 @@ import complaint from "../model/complainSchema.js";
 import property from "../model/propertySchema.js";
 
 
-const getComplaintsSummary = async (req, res) => {
+const getComplaintsSummary = async (req, res,next) => {
+  console.log("fjjdbgf");
     const ownerId=req.owner.id
+    console.log(ownerId);
     try {
       const comp = await complaint.find().populate('property');
+      // console.log(comp);
       const complaints=comp.filter((ele)=>{
+        // console.log(ele);
         return ele.property.owner==ownerId
     })
-  
+  // console.log(complaints);
       const summary = complaints.reduce(
         (acc, complaint) => {
           acc.total += 1;
@@ -37,7 +41,7 @@ const getComplaintsSummary = async (req, res) => {
     }
   };
 
-  const getComplaintsSummaryByProperty = async (req, res) => {
+  const getComplaintsSummaryByProperty = async (req, res,next) => {
     const ownerId=req.owner.id
     try {
       const prop = await property.find().populate('complaints');
@@ -73,7 +77,7 @@ const getComplaintsSummary = async (req, res) => {
     }
   };
 
-  const getComplaintsDetails = async (req, res) => {
+  const getComplaintsDetails = async (req, res,next) => {
     const { category } = req.query;
     const ownerId=req.owner.id
     try {
